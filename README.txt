@@ -4,7 +4,15 @@ The manipulation controls prefab can be dropped on any object and it should allo
 
 The method employed is that an input controller detects mouse input or touches and does a raycast into the scene. If the raycast hits one of the interface elements then the element will perform its funcion until the mouse button or touch is released.
 
+Build instructions: 
+
+1. Clone the repo.
+2. Open in Unity 2020.3.42f1
+3. Load Scenes/DemoScene.scene
+4. Press play.
+
 Known limitations:
 - If more than one gimble is added to the scene at the same time then all control elements will effect a random element. This can be fixed by having a universal input controller rather than one per object.
 - All translations are performed in absolute space and not relitive to the orentation of the object. This can be fixed by multiplying the vector by the object's rotation.
 - All translations assume the camera's up is the same as the world up. This can be fixed by multiplying the translation vector by the camera's up vector.
+- This demo does not contain camera controls. Any camera movement will have to be done using the unity editor.
