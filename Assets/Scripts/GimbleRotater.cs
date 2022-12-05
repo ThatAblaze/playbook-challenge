@@ -5,7 +5,7 @@ using MEC;
 
 public class GimbleRotater : MonoBehaviour, IGimbleElement
 {
-    public float rotateSpeed = 1f;
+    public Vector3 axis = Vector3.right;
 
     private RaycastHit hit;
     private CoroutineHandle rotater;
@@ -21,12 +21,15 @@ public class GimbleRotater : MonoBehaviour, IGimbleElement
 
     private IEnumerator<float> _RotateWithMouse(GimbleInputController source, Transform objectToRotate)
     {
-        Vector3 startPos = Input.mousePosition;
+        Vector2 startPos = Input.mousePosition;
         Vector3 initialRotation = objectToRotate.localRotation.eulerAngles;
 
         while(!Input.GetMouseButtonUp(0))
         {
-            objectToRotate.localRotation = Quaternion.Euler(initialRotation.x, initialRotation.y + (rotateSpeed * (Input.mousePosition.x - startPos.x)), initialRotation.z);
+            objectToRotate.localRotation = Quaternion.Euler(
+                initialRotation.x + (axis.y * (Input.mousePosition.x - startPos.x)), 
+                initialRotation.y + (axis.z * (Input.mousePosition.x - startPos.x)), 
+                initialRotation.z + (axis.x * (Input.mousePosition.y - startPos.y)));
 
             yield return Timing.WaitForOneFrame;
         }
@@ -42,7 +45,10 @@ public class GimbleRotater : MonoBehaviour, IGimbleElement
 
         while (Input.touchCount > 0)
         {
-            objectToRotate.localRotation = Quaternion.Euler(initialRotation.x, initialRotation.y + (rotateSpeed * (Input.touches[0].position.x - startPos.x)), initialRotation.z);
+            objectToRotate.localRotation = Quaternion.Euler(
+                initialRotation.x + (axis.x * (Input.touches[0].position.y - startPos.y)),
+                initialRotation.y + (axis.y * (Input.touches[0].position.x - startPos.x)),
+                initialRotation.z + (axis.z * (Input.touches[0].position.y - startPos.y)));
 
             yield return Timing.WaitForOneFrame;
         }
